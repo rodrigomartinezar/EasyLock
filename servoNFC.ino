@@ -67,13 +67,13 @@ Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
 // Or use this line for a breakout or shield with an I2C connection:
 //Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
 Servo candado;
-int successLed = 13;
 
 void setup(void) {
   Serial.begin(115200);
   Serial.println("Hello!");
-  pinMode(successLed, OUTPUT);
   candado.attach(9);
+  candado.write(40);
+  analogWrite(6, 120);
   nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
@@ -94,7 +94,6 @@ void setup(void) {
 }
 
 void loop(void) {
-  digitalWrite(successLed, LOW);
   uint8_t success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
   uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
@@ -105,19 +104,18 @@ void loop(void) {
   success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
   
   if (success) {
-    digitalWrite(successLed, HIGH);
     // Display some basic information about the card
     Serial.println("Found an ISO14443A card");
     Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
     Serial.print("  UID Value: ");
     nfc.PrintHex(uid, uidLength);
     Serial.println("");
-    candado.write(180);
+    candado.write(0);
     time_now = millis();
-    while(millis() < time_now + 2000){
+    while(millis() < time_now + 4000){
       
     }
-    candado.write(0);
+    candado.write(40);
     if (uidLength == 4)
     {
       // We probably have a Mifare Classic card ... 
