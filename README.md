@@ -1,3 +1,2 @@
-# proyecto-TIET
-Código utilizado en módulo Arduino UNO para proyecto de TIET Semestre 2 año 2018.
-Objetivo: Crear un candado que funcione a través de NFC.
+# EasyLock
+Código utilizado en módulo Arduino UNO con módulo NFC RFID PN532 para prototipar un candado que funcione con NFC.
